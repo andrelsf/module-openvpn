@@ -1,0 +1,31 @@
+remote <%= @openvpn_remote_server %>
+
+proto <%= @openvpn_config_proto %>
+port <%= @openvpn_config_port %>
+
+resolv-retry infinite
+
+dev tun0
+ifconfig <%= @openvpn_ips_cli_srv %>
+
+secret <%= @openvpn_key_file_name %>
+
+user nobody
+group nobody
+
+keepalive 10 120
+comp-lzo
+persist-key
+persist-tun
+
+txqueuelen 1000
+tun-mtu 9000
+fragment 0
+mssfix 0
+
+verb 3
+log <%= @openvpn_file_log %>
+log-append <%= @openvpn_file_log %>
+status <%= @openvpn_file_status %>
+
+cipher <%= @openvpn_cipher %>

@@ -1,0 +1,87 @@
+# Qual protocolo deve ser usado TCP/UDP
+# O udp4 força a utilização do IPv4 
+#proto udp4
+proto <%= @openvpn_config_proto %>
+
+# Porta de escuta do openvpn. Parta padrão 1194
+# Pode ser aplicado regras de firewall iptables para reforçar a segurança.
+#port 5501
+port <%= @openvpn_config_port %>
+
+# Ip que escutara as requisições
+#local 10.62.0.254
+
+# Se a resolução de hostname falhar esta diretiva ficará tentando indefinidamente
+resolv-retry infinite
+
+# Interface do tipo TUN opera na camada de Rede, ou seja, com endereços IP
+# Caso seja TAP ele opera também na camada de Enlace permitindo por exempo ARP
+dev tun0
+
+# Estabele os IPs utilizados pelas interfaces
+# Primeiro ip do host que o arquivo de configuração esta e segundo para o host remoto
+#ifconfig 10.0.0.1 10.0.0.2
+ifconfig <%= @openvpn_ips_srv_cli %>
+
+# Secret aponta localização da chave que será usara para negociar o estabelecimento de coneção
+# entre o servidor e o cliente OpenVPN. Esta chave e simetrica.
+#secret openvpn.key
+secret <%= @openvpn_key_file_name %>
+
+# Em servidores Linux garante que o OpenVPN não será executado por usuários com previlegios.
+user nobody
+group nobody
+
+# Parametro que faz com que o OpenVPN mantenha a conecção mais estavel
+# a cada 10 segundos e verificado se o servidor esta ativo
+# em caso de falha depois de 120 segundos o serviço será reiniciado
+keepalive 10 120
+
+# Faz uso do algoritmo de compressão rapida. Otimiza o uso da largura de banda
+comp-lzo
+
+# Percistencia da chave em memoria sem a necessidade re-ler a chave em
+# casos de SIGUSR1 ou restart do OpenVPN
+persist-key
+
+# Não fecha e reabre dispositivos TUN/TAP ou executa scripts up/down SIGUSR1 ou --ping-restart
+persist-tun
+
+# Preserva inicialmente o endereço IP local resolvido e o numero da porta atraves reinicialização SIGUSR1 ou --ping-restart. 
+persist-local-ip
+
+# Configura o tamanho da fila de Transmissão sobre interfaces TUN/TAP. Padrão e 100.
+txqueuelen 1000
+
+# Muda a MTU de 1500 padrão para 9000
+tun-mtu 9000
+
+# Define que datagramas não sofrerão fragmentação
+fragment 0
+
+# Esta opção somente e utilizada se usar protocolo UDP para comunição Peer-to-Peer.
+# Ela define correção da MTU que está quebrada no seguimento de rede entre os pares OpenVPN.
+mssfix 0
+
+# Manager
+#management 127.0.0.1 9000
+
+# Nivel de apresentação de informações na execução do OpenVPN que será enviado para o LOG.
+# niveis 0 a 9 onde 0 nivel mais baixo e 9 extremamente informativo.
+verb 3
+
+# Define o arquivo de log. Se não especificado ele enviara para o /var/log/messages
+#log /var/log/openvpn.log
+log <%= @openvpn_file_log %>
+
+# Logs adicionais para o mesmo arquivo.
+#log-append /var/log/openvpn.log
+log-append <%= @openvpn_file_log %>
+
+# Status do tunel com quantidade de bytes recebidos e envidados
+#status /var/log/openvpn-status.log
+status <%= @openvpn_file_status %>
+
+# Cifra utilizada para encriptar e decriptar informações trafegadas pelo tunel
+#cipher AES-128-CBC
+cipher <%= @openvpn_cipher %>
