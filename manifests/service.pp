@@ -1,4 +1,6 @@
 class openvpn::service (
+  String $openvpn_sisar			= $openvpn::openvpn_sisar,
+  String $openvpn_ejbca			= $openvpn::openvpn_ejbca,
   String $service_name_server		= $openvpn::service_name_server,
   String $service_name_client		= $openvpn::service_name_client,
   String $service_ensure 		= $openvpn::service_ensure,
@@ -13,7 +15,7 @@ class openvpn::service (
   if $openvpn_sisar == $::hostname {
     exec { 'openvpn_server':
       command => $openvpn_create_service_server,
-      unless  => $openvpn_verify_service_server,
+      #unless  => $openvpn_verify_service_server,
     }
     service { $service_name_server:
       ensure	=> $service_ensure,
@@ -25,7 +27,7 @@ class openvpn::service (
   }elsif $openvpn_ejbca == $::hostname {
     exec { 'openvpn_client':
       command => $openvpn_create_service_client,
-      unless  => $openvpn_verify_service_client,
+      #unless  => $openvpn_verify_service_client,
     }
     service { $service_name_client:
       ensure    => $service_ensure,
@@ -33,6 +35,10 @@ class openvpn::service (
       name      => $service_name_client,
       hasstatus => $service_hasstatus,
       hasrestart=> $service_hasrestart,
+    }
+  } else {
+    notify { 'OpenVPN_Service':
+      message => "OpenVPN [ INFO ] Node not found.",
     }
   }
 }

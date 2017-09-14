@@ -38,8 +38,8 @@ class openvpn::config(
       message => "[ Fail ] - Node not found."
     }
   }  
-  file { $openvpn_file_key:
-      ensure    => file,
-      source    => "puppet:///module/openvpn/secrets/openvpn.key",
+  file { "/etc/openvpn/${openvpn_file_key}":
+    ensure    => file,
+    content   => template("$module_name/openvpn.key.erb")
   }
 }

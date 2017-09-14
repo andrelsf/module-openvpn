@@ -1,11 +1,7 @@
 class openvpn::params{
   $openvpn_sisar		 = 'SISAR-ANDRE'
   $openvpn_ejbca		 = 'EJBCA-ANDRE'
-  $packages_openvpn		 = [
-			   	    'epel-release', 
-			   	    'lzo',
-			   	    'lzo-devel', 
-			   	   ]
+  $packages_openvpn		 = ['epel-release', 'openvpn', 'lzo', 'lzo-devel']
   
   $service_name_server  	 = 'openvpn@server'
   $service_name_client  	 = 'openvpn@client'
@@ -24,7 +20,7 @@ class openvpn::params{
   $config_group			 = 'root'
   $config_mode			 = '0640'
   $openvpn_file_client		 = 'client.conf'
-  $openvpn_file_key		 = '/etc/openvpn/openvpn.key'
+  $openvpn_file_key		 = 'openvpn.key'
 
   $openvpn_config_proto		 = 'udp4'
   $openvpn_config_port		 = '5501'
