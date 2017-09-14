@@ -31,7 +31,7 @@ class openvpn::config(
       owner     => $config_owner,
       group     => $config_group,
       mode      => $config_mode,
-      content   => template("$module_name/clien.conf.erb")
+      content   => template("$module_name/client.conf.erb")
     }
   } else {
     notify { 'info_hostname':
