@@ -1,6 +1,6 @@
 class openvpn::params{
-  $openvpn_sisar		 = 'SISAR-ANDRE'
-  $openvpn_ejbca		 = 'EJBCA-ANDRE'
+  $openvpn_client = 'client'
+  $openvpn_server = 'server'
   $packages_openvpn		 = ['epel-release', 'openvpn', 'lzo', 'lzo-devel']
   
   $service_name_server  	 = 'openvpn@server'
